@@ -90,13 +90,15 @@ services:
     environment:
       - PUID=1000  # User ID for file permissions
       - PGID=1000  # Group ID for file permissions
-      - TZ=Europe/London  # Adjust timezone
+      - TZ=Europe/Berlin  # Adjust timezone
       - CUSTOM_USER=your_username  # Set your own username
       - PASSWORD=your_password  # Set your password
       - CHROME_CLI=https://www.google.com  # Optional: Default starting page
     ports:
       - "3050:3000"  # Adjust ports if necessary
       - "3051:3001"
+    security_opt:
+      - seccomp:unconfined
     volumes:
       - /root/chromium/config:/config  # Config directory for Chromium
     shm_size: "1gb"  # Prevents crashes by giving the container enough shared memory
