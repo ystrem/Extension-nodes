@@ -41,14 +41,14 @@ VPS 4 : [Contabo: Cloud VPS 4](https://www.anrdoezrs.net/click-101278318-1379647
 
 Here’s an alternative method to install and run Chromium using Docker, based on the `lscr.io/linuxserver/chromium:latest` image:
 
-### Step 1: Update VPS
+###  1: Update VPS
 ```bash
 sudo apt-get update && sudo apt-get upgrade -y
 sudo apt install curl -y
 sudo apt install ca-certificates
 ```
 
-### Step 2: Install Docker
+###  2: Install Docker
 ```
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
@@ -58,7 +58,7 @@ sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io
 docker version
 ```
-### Step 2: Install docker compose
+###  3: Install docker compose
 ```
 VER=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)
 
@@ -68,18 +68,18 @@ chmod +x /usr/local/bin/docker-compose
 docker-compose --version
 ```
 
-### 3. Create a Project Directory:
+### 4. Create a Project Directory:
 ```bash
 mkdir chromium
 cd chromium
 ```
 
-### 4. Create a `docker-compose.yml` File:
+### 5. Create a `docker-compose.yml` File:
 ```bash
 nano docker-compose.yml
 ```
 
-### 5. Paste This Docker Compose Configuration:
+### 6. Paste This Docker Compose Configuration:
 
 ```yaml
 version: "3.8"
@@ -103,20 +103,23 @@ services:
     restart: unless-stopped  # Automatically restart on failures or reboots
 ```
 
-### 6. Save and Exit:
+### 7. Save and Exit:
 Save the file by pressing `Ctrl + X`, then `Y`, and press `Enter`.
 
-### 7. Start the Container:
+### 8. Start the Container:
 Run the following command to spin up the Chromium container:
 ```bash
 docker-compose up -d
 ```
 
-### 8. Access Chromium:
+### 9. Access Chromium:
 Open your browser and visit:
-```bash
+
 http://<VPS_IP>:3050
-```
+
+Or
+
+https://<VPS_IP>:3051
 
 You can now access Chromium remotely via the VNC interface with your set username and password.
 
