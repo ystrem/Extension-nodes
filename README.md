@@ -18,9 +18,9 @@ Subscribe : [Crypto Console Youtube](https://www.youtube.com/@cryptoconsole)
 
 | **Hardware** | **Minimum Requirement** |
 |--------------|-------------------------|
-| **CPU**      | 6 Cores                 |
-| **RAM**      | 6 GB                    | 
-| **Disk**     | 100  GB  SSD            |
+| **CPU**      | 4 Cores                 |
+| **RAM**      | 4 GB                    | 
+| **Disk**     | 10   GB  SSD            |
 
 ---
 
@@ -68,37 +68,61 @@ chmod +x /usr/local/bin/docker-compose
 docker-compose --version
 ```
 
-
-### Step 2: Pull the Chromium Docker Image
+### 3. Create a Project Directory:
 ```bash
-docker pull lscr.io/linuxserver/chromium:latest
+mkdir chromium
+cd chromium
 ```
 
-### Step 3: Run Chromium in Docker
-Run the following command to start Chromium with custom ports, time zone, and user credentials:
+### 4. Create a `docker-compose.yml` File:
 ```bash
-docker run -d \
-  --name=chromium \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e TZ=Europe/London \
-  -e CUSTOM_USER=<username> \
-  -e PASSWORD=<password> \
-  -p 3000:3000 \
-  -p 3001:3001 \
-  --shm-size=1gb \
-  -v /root/chromium/config:/config \
-  --restart unless-stopped \
-  lscr.io/linuxserver/chromium:latest
+nano docker-compose.yml
 ```
 
-### Step 4: Access Chromium
-In your browser, go to:
-```bash
-http://<VPS_IP>:3000
+### 5. Paste This Docker Compose Configuration:
+
+```yaml
+version: "3.8"
+services:
+  chromium:
+    image: lscr.io/linuxserver/chromium:latest
+    container_name: chromium_browser
+    environment:
+      - PUID=1000  # User ID for file permissions
+      - PGID=1000  # Group ID for file permissions
+      - TZ=Europe/London  # Adjust timezone
+      - CUSTOM_USER=your_username  # Set your own username
+      - PASSWORD=your_password  # Set your password
+      - CHROME_CLI=https://www.google.com  # Optional: Default starting page
+    ports:
+      - "3050:3000"  # Adjust ports if necessary
+      - "3051:3001"
+    volumes:
+      - /root/chromium/config:/config  # Config directory for Chromium
+    shm_size: "1gb"  # Prevents crashes by giving the container enough shared memory
+    restart: unless-stopped  # Automatically restart on failures or reboots
 ```
 
-### Optional: Adjust Environment Variables
-- **TZ**: Change the time zone as required.
-- **Ports**: Modify ports if there are conflicts (e.g., `3000` and `3001`).
+### 6. Save and Exit:
+Save the file by pressing `Ctrl + X`, then `Y`, and press `Enter`.
+
+### 7. Start the Container:
+Run the following command to spin up the Chromium container:
+```bash
+docker-compose up -d
+```
+
+### 8. Access Chromium:
+Open your browser and visit:
+```bash
+http://<VPS_IP>:3050
+```
+
+You can now access Chromium remotely via the VNC interface with your set username and password.
+
+### System Requirements:
+- **CPU:** 2 Core or more.
+- **RAM:** At least 2GB.
+- **Disk:** 10GB of storage for Docker and Chromium.
+- **Ports:** Ensure ports `3050` and `3051` (or your selected ports) are open in the firewall.
 
